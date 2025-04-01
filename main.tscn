@@ -1,0 +1,371 @@
+[gd_scene load_steps=31 format=3 uid="uid://mfxy3fgs2vs4"]
+
+[ext_resource type="AudioStream" uid="uid://vfx05nshrkya" path="res://sfx/pshh.ogg" id="1_0xm2m"]
+[ext_resource type="Shader" uid="uid://bjraprk5yo8a" path="res://main.tres" id="1_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://c02iyjbou3cnw" path="res://spark_particle.tscn" id="1_h2yge"]
+[ext_resource type="AudioStream" uid="uid://h3ux8ynaghui" path="res://bgm/Rise of the Warriors.mp3" id="1_jsu24"]
+[ext_resource type="Script" uid="uid://bc7iufle44rh1" path="res://fighter.gd" id="2_lquwl"]
+[ext_resource type="AudioStream" uid="uid://b1ld7go3k443y" path="res://bgm/Rise of the Warriors ext v1.2 remix v2.wav" id="5_lquwl"]
+
+[sub_resource type="GDScript" id="GDScript_5t3v0"]
+resource_name = "main"
+script/source = "extends Node2D
+
+@export var player_1 : Fighter
+@export var player_2 : Fighter
+
+func _ready() -> void:
+    $CanvasLayer/P1Wins.text = \"WIN %2d\" % Wins.p1_wins
+    $CanvasLayer/P2Wins.text = \"WIN %2d\" % Wins.p2_wins
+
+
+func _on_p_2_end_fight(fighter : Node) -> void:
+    Wins.p1_wins += 1
+    end_fight()
+
+
+func _on_p_1_end_fight(fighter : Node) -> void:
+    Wins.p2_wins += 1
+    end_fight()
+
+func end_fight():
+
+
+    player_1.process_mode = Node.PROCESS_MODE_DISABLED
+    player_1.contact_monitor = false
+    player_2.process_mode = Node.PROCESS_MODE_DISABLED
+    player_1.contact_monitor = false
+
+    await get_tree().create_timer(5).timeout
+    get_tree().reload_current_scene()
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lquwl"]
+shader = ExtResource("1_1bvp3")
+
+[sub_resource type="Gradient" id="Gradient_7mycd"]
+offsets = PackedFloat32Array(0.033152, 0.187709, 0.983799)
+colors = PackedColorArray(0.71, 0.0236667, 0, 1, 0.68, 0.294667, 0, 1, 1, 0.866667, 0, 0.301961)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_272bh"]
+gradient = SubResource("Gradient_7mycd")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_1bvp3"]
+offsets = PackedFloat32Array(0, 0.633811, 0.88596, 0.940401)
+colors = PackedColorArray(1, 1, 1, 1, 0.954738, 0.954738, 0.954738, 1, 0.503725, 0.503725, 0.503725, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lquwl"]
+gradient = SubResource("Gradient_1bvp3")
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_h2yge"]
+random_pitch = 1.4
+streams_count = 1
+stream_0/stream = ExtResource("1_0xm2m")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5t3v0"]
+size = Vector2(128, 128)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5t3v0"]
+friction = 0.5
+bounce = 0.5
+
+[sub_resource type="Gradient" id="Gradient_272bh"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.502006, 0.570773)
+colors = PackedColorArray(0, 0, 0, 1, 0.547059, 0.15866, 0.166855, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5vw27"]
+gradient = SubResource("Gradient_272bh")
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="Animation" id="Animation_jsu24"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Polygon2D2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_5t3v0"]
+resource_name = "shake"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Polygon2D2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.633333, 0.833333),
+"transitions": PackedFloat32Array(1, 0.535887, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1.45519e-11, 10), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_osv71"]
+_data = {
+&"RESET": SubResource("Animation_jsu24"),
+&"shake": SubResource("Animation_5t3v0")
+}
+
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_7mycd"]
+shuffle = true
+stream_count = 3
+stream_0 = ExtResource("1_jsu24")
+stream_1 = ExtResource("5_lquwl")
+
+[sub_resource type="LabelSettings" id="LabelSettings_lquwl"]
+font_size = 40
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 8
+shadow_color = Color(0, 0, 0, 0.501961)
+shadow_offset = Vector2(4, 4)
+
+[sub_resource type="GDScript" id="GDScript_jsu24"]
+resource_name = "fps"
+script/source = "extends Label
+
+
+func _process(delta: float) -> void:
+    pass
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_osv71"]
+bg_color = Color(0.6, 0.279522, 0.249147, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7pp0j"]
+bg_color = Color(0.826471, 0.779553, 0.286934, 1)
+border_color = Color(0.880392, 0.880392, 0.880392, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+corner_detail = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_jsu24"]
+font_size = 40
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 8
+shadow_color = Color(0, 0, 0, 0.501961)
+shadow_offset = Vector2(4, 4)
+
+[sub_resource type="LabelSettings" id="LabelSettings_vfgkf"]
+font_size = 64
+
+[sub_resource type="GDScript" id="GDScript_7pp0j"]
+resource_name = "timer"
+script/source = "extends Label
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7mycd"]
+bg_color = Color(0.450499, 0.6, 0.38702, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="LabelSettings" id="LabelSettings_272bh"]
+font_size = 18
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Areama" type="Node2D" node_paths=PackedStringArray("player_1", "player_2")]
+script = SubResource("GDScript_5t3v0")
+player_1 = NodePath("P1")
+player_2 = NodePath("P2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.552941)
+material = SubResource("ShaderMaterial_lquwl")
+position = Vector2(948, 544)
+scale = Vector2(23.4074, 14.1299)
+texture = SubResource("GradientTexture2D_272bh")
+region_enabled = true
+region_rect = Rect2(-9, -6.5, 81, 77)
+
+[node name="P1" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_bar")]
+position = Vector2(256, 192)
+disable_mode = 2
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("2_lquwl")
+torque_a = 750.0
+torque_b = 100.0
+spark = ExtResource("1_h2yge")
+health_bar = NodePath("../CanvasLayer/Label/P1Bar")
+color = Color(0.0551414, 0, 1, 1)
+
+[node name="Polygon2D" type="Polygon2D" parent="P1"]
+color = Color(0.0468092, 0, 1, 1)
+texture = SubResource("GradientTexture2D_lquwl")
+polygon = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+uv = PackedVector2Array(-4.76837e-07, -4.76837e-07, 64, -3.8147e-06, 64, 64, 4.76837e-07, 64)
+
+[node name="Polygon2D2" type="CollisionPolygon2D" parent="P1"]
+polygon = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="P1"]
+stream = SubResource("AudioStreamRandomizer_h2yge")
+pitch_scale = 1.01
+bus = &"SFX"
+
+[node name="P2" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_bar")]
+position = Vector2(1664, 192)
+disable_mode = 2
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("2_lquwl")
+torque_a = 750.0
+torque_b = 100.0
+spark = ExtResource("1_h2yge")
+health_bar = NodePath("../CanvasLayer/Label2/P2Bar")
+color = Color(1, 0, 0.00543594, 1)
+
+[node name="Polygon2D" type="Polygon2D" parent="P2"]
+color = Color(1, 0.201939, 0.207556, 1)
+texture = SubResource("GradientTexture2D_lquwl")
+polygon = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+uv = PackedVector2Array(7.62939e-06, 0, 64, 0, 64, 64, 7.62939e-06, 64)
+
+[node name="Polygon2D2" type="CollisionShape2D" parent="P2"]
+shape = SubResource("RectangleShape2D_5t3v0")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="P2"]
+stream = SubResource("AudioStreamRandomizer_h2yge")
+bus = &"SFX"
+
+[node name="Ring" type="StaticBody2D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_5t3v0")
+
+[node name="Polygon2D2" type="CollisionPolygon2D" parent="Ring"]
+polygon = PackedVector2Array(1920, 1088, 1920, 0, 992, 0, 1088, 64, 1856, 64, 1856, 1024, 64, 1024, 64, 64, 832, 64, 928, 0, 0, 0, 0, 1088)
+
+[node name="Polygon2D" type="Polygon2D" parent="Ring"]
+texture_repeat = 2
+color = Color(1, 0.968048, 0.954732, 1)
+texture = SubResource("GradientTexture2D_5vw27")
+polygon = PackedVector2Array(1920, 1088, 1920, 0, 992, 0, 1088, 64, 1856, 64.5273, 1856, 1024, 64, 1024, 64, 64, 832, 64, 928, 0, 0, 0, 0, 1088)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Ring"]
+libraries = {
+&"": SubResource("AnimationLibrary_osv71")
+}
+speed_scale = 2.0
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamPlaylist_7mycd")
+autoplay = true
+bus = &"Music"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.0666667
+anchor_top = 0.112037
+anchor_right = 0.11875
+anchor_bottom = 0.162037
+text = "Dude"
+label_settings = SubResource("LabelSettings_lquwl")
+script = SubResource("GDScript_jsu24")
+metadata/_edit_use_anchors_ = true
+
+[node name="P1Bar" type="ProgressBar" parent="CanvasLayer/Label"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = -23.0
+offset_right = 654.0
+offset_bottom = 1.0
+theme_override_styles/background = SubResource("StyleBoxFlat_osv71")
+theme_override_styles/fill = SubResource("StyleBoxFlat_7pp0j")
+min_value = 1.0
+value = 100.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label2" type="Label" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.879167
+anchor_top = 0.112963
+anchor_right = 0.932292
+anchor_bottom = 0.162963
+text = "Mans"
+label_settings = SubResource("LabelSettings_jsu24")
+script = SubResource("GDScript_jsu24")
+metadata/_edit_use_anchors_ = true
+
+[node name="P2Bar" type="ProgressBar" parent="CanvasLayer/Label2"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -544.0
+offset_top = -24.0
+offset_right = 110.0
+theme_override_styles/background = SubResource("StyleBoxFlat_osv71")
+theme_override_styles/fill = SubResource("StyleBoxFlat_7pp0j")
+min_value = 1.0
+value = 100.0
+fill_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Timer" type="Label" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.475
+anchor_top = 0.037037
+anchor_right = 0.525
+anchor_bottom = 0.118519
+offset_right = 6.10352e-05
+text = "♾"
+label_settings = SubResource("LabelSettings_vfgkf")
+horizontal_alignment = 1
+script = SubResource("GDScript_7pp0j")
+metadata/_edit_use_anchors_ = true
+
+[node name="P1Wins" type="Label" parent="CanvasLayer"]
+offset_left = 640.0
+offset_top = 136.0
+offset_right = 768.0
+offset_bottom = 170.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_7mycd")
+text = "WIN"
+label_settings = SubResource("LabelSettings_272bh")
+
+[node name="P2Wins" type="Label" parent="CanvasLayer"]
+offset_left = 1152.0
+offset_top = 136.0
+offset_right = 1280.0
+offset_bottom = 170.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_7mycd")
+text = "WIN"
+label_settings = SubResource("LabelSettings_272bh")
+
+[connection signal="body_entered" from="P1" to="P1" method="_on_body_entered"]
+[connection signal="end_fight" from="P1" to="." method="_on_p_1_end_fight"]
+[connection signal="body_entered" from="P2" to="P2" method="_on_body_entered"]
+[connection signal="end_fight" from="P2" to="." method="_on_p_2_end_fight"]
+[connection signal="ready" from="Ring/AnimationPlayer" to="Ring/AnimationPlayer" method="play" binds= ["shake"]]

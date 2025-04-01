@@ -1,0 +1,41 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="TULPF:DTP"
+run/main_scene="uid://mfxy3fgs2vs4"
+config/features=PackedStringArray("4.4", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+Wins="*res://wins.gd"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/sprite-shader-mixer/plugin.cfg")
+
+[physics]
+
+2d/run_on_separate_thread=true
+2d/physics_engine="Rapier2D"
+2d/default_linear_damp=0.0
+2d/default_angular_damp=0.0
+common/physics_interpolation=true
+
+[rendering]
+
+environment/defaults/default_clear_color=Color(0.0519608, 0.0519608, 0.0519608, 1)
