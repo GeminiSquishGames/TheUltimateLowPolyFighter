@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://chyi8eqv2b2qu"
+path="res://.godot/imported/Galactic Odyssey ext v1.mp3-876e3e7cd118bbda34bd583f764bc0a2.mp3str"
+
+[deps]
+
+source_file="res://bgm/Galactic Odyssey ext v1.mp3"
+dest_files=["res://.godot/imported/Galactic Odyssey ext v1.mp3-876e3e7cd118bbda34bd583f764bc0a2.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

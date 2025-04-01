@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dx2sbpvyexydw"
+path="res://.godot/imported/Champion's Resolve.mp3-3f34b7c3187c85b61c5be84b6b4f20ce.mp3str"
+
+[deps]
+
+source_file="res://bgm/Champion's Resolve.mp3"
+dest_files=["res://.godot/imported/Champion's Resolve.mp3-3f34b7c3187c85b61c5be84b6b4f20ce.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

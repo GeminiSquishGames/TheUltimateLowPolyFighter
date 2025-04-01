@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dq2to3q2imj00"
+path="res://.godot/imported/Chasing the Chaos.mp3-22fd23b26e4f78839d535fc78d4a6711.mp3str"
+
+[deps]
+
+source_file="res://bgm/Chasing the Chaos.mp3"
+dest_files=["res://.godot/imported/Chasing the Chaos.mp3-22fd23b26e4f78839d535fc78d4a6711.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

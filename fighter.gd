@@ -7,6 +7,8 @@ extends RigidBody2D
 @export var floaty_text : PackedScene = preload("res://floaty_text.tscn")
 @export var spark : PackedScene
 
+@export var fighter_name : StringName
+
 @export var health_bar : ProgressBar
 
 @export var color : Color
@@ -45,6 +47,7 @@ func _on_body_entered(body: Node) -> void:
         dmg_ln = sqrt( body.linear_velocity.length_squared()) * 0.01
         dmg_an = abs(body.angular_velocity)
         dmg = (dmg_an + dmg_ln) / 2
+        #dmg = clamp(dmg, 0, 10)
 
         health -= dmg
         health_bar.value = health

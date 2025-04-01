@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/Rise of the Warriors.mp3-cdc6991ebce4da16e59c
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0
 bpm=0
 beat_count=0

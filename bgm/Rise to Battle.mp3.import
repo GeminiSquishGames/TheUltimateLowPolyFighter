@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dd1jgk5xds88e"
+path="res://.godot/imported/Rise to Battle.mp3-9d1ca5cd7d8dce226b015befb514fd2b.mp3str"
+
+[deps]
+
+source_file="res://bgm/Rise to Battle.mp3"
+dest_files=["res://.godot/imported/Rise to Battle.mp3-9d1ca5cd7d8dce226b015befb514fd2b.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
