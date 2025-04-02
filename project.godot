@@ -13,16 +13,21 @@ config_version=5
 config/name="TULPF:DTP"
 run/main_scene="uid://mfxy3fgs2vs4"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://icon.svg"
+boot_splash/bg_color=Color(0.109625, 0.113545, 0.140196, 1)
+boot_splash/image="uid://dfq2oj0j2jdyj"
+boot_splash/minimum_display_time=1000
 
 [autoload]
 
-Wins="*res://wins.gd"
+Wins="*res://scripts/wins.gd"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/mode=3
+window/size/extend_to_title=true
+window/stretch/mode="canvas_items"
 
 [editor_plugins]
 

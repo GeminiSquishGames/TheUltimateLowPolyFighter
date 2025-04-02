@@ -1,0 +1,493 @@
+[gd_scene load_steps=45 format=3 uid="uid://mfxy3fgs2vs4"]
+
+[ext_resource type="AudioStream" uid="uid://vfx05nshrkya" path="res://sfx/pshh.ogg" id="1_0xm2m"]
+[ext_resource type="Shader" uid="uid://bjraprk5yo8a" path="res://main.tres" id="1_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://c02iyjbou3cnw" path="res://scenes/spark_particle.tscn" id="1_h2yge"]
+[ext_resource type="AudioStream" uid="uid://h3ux8ynaghui" path="res://bgm/Rise of the Warriors.mp3" id="1_jsu24"]
+[ext_resource type="Script" uid="uid://bc7iufle44rh1" path="res://scripts/fighter.gd" id="2_lquwl"]
+[ext_resource type="PackedScene" uid="uid://ydvvwab66snw" path="res://scenes/floaty_text.tscn" id="3_dp3eg"]
+[ext_resource type="AudioStream" uid="uid://dx2sbpvyexydw" path="res://bgm/Champion's Resolve.mp3" id="5_yaehf"]
+[ext_resource type="AudioStream" uid="uid://dq2to3q2imj00" path="res://bgm/Chasing the Chaos.mp3" id="6_074og"]
+[ext_resource type="AudioStream" uid="uid://b8q6n8lt036un" path="res://bgm/Pixels of Resilience.mp3" id="7_cegan"]
+[ext_resource type="AudioStream" uid="uid://dd1jgk5xds88e" path="res://bgm/Rise to Battle.mp3" id="9_82xsv"]
+[ext_resource type="AudioStream" uid="uid://dy2l3ehi5osta" path="res://bgm/Electric Fields ext v1.mp3" id="10_getpj"]
+[ext_resource type="AudioStream" uid="uid://bcf1codk0p5or" path="res://bgm/Electric Fields ext v2.mp3" id="11_ryguw"]
+[ext_resource type="AudioStream" uid="uid://5yuhiq631o13" path="res://bgm/Funky Harvest ext v1.mp3" id="12_d13ii"]
+[ext_resource type="AudioStream" uid="uid://rxym063ujl8p" path="res://bgm/Funky Harvest ext v2.mp3" id="13_1u8w0"]
+[ext_resource type="AudioStream" uid="uid://chyi8eqv2b2qu" path="res://bgm/Galactic Odyssey ext v1.mp3" id="14_0odxb"]
+[ext_resource type="AudioStream" uid="uid://c016hcpwrm5g6" path="res://bgm/Galactic Odyssey ext v2.mp3" id="15_lswn8"]
+[ext_resource type="AudioStream" uid="uid://cls0hyp888sid" path="res://bgm/Pixel Warriors.mp3" id="16_a6jrf"]
+[ext_resource type="AudioStream" uid="uid://ue0mbwnl0hu7" path="res://bgm/Pixelated Valor.mp3" id="17_xuqvo"]
+
+[sub_resource type="GDScript" id="GDScript_5t3v0"]
+resource_name = "main"
+script/source = "extends Node2D
+
+@export var player_1 : Fighter
+@export var player_2 : Fighter
+
+@onready var bgm: AudioStreamPlayer = $BGM
+
+
+func _ready() -> void:
+    $CanvasLayer/Winner.visible = false
+
+    $CanvasLayer/P1Wins.text = \"WIN %2d\" % Wins.p1_wins
+    $CanvasLayer/P2Wins.text = \"WIN %2d\" % Wins.p2_wins
+
+    $CanvasLayer/P1Name.text = player_1.fighter_name
+    $CanvasLayer/P2Name.text = player_2.fighter_name
+
+
+func _on_p_2_end_fight(fighter : Node) -> void:
+    #Wins.p1_wins += 1
+    end_fight()
+
+
+func _on_p_1_end_fight(fighter : Node) -> void:
+    #Wins.p2_wins += 1
+    end_fight()
+
+func end_fight():
+    var winner : String
+    if player_1.health > player_2.health:
+        winner = player_1.fighter_name
+        Wins.p1_wins += 1
+
+        player_2.process_mode = Node.PROCESS_MODE_DISABLED
+    else:
+        winner = player_2.fighter_name
+        Wins.p2_wins += 1
+
+        player_1.process_mode = Node.PROCESS_MODE_DISABLED
+
+    $CanvasLayer/Winner.text = \"%s WINS!\" % winner
+    $CanvasLayer/Winner.visible = true
+
+
+    player_1.contact_monitor = false
+
+    player_2.contact_monitor = false
+
+    $CanvasLayer/Timer/Timer.stop()
+    var tween = get_tree().create_tween()
+    tween.tween_property(bgm, \"volume_db\", -80, 3)
+
+    await get_tree().create_timer(8).timeout
+    get_tree().reload_current_scene()
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lquwl"]
+shader = ExtResource("1_1bvp3")
+
+[sub_resource type="Gradient" id="Gradient_7mycd"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.00893841, 0.218436, 0.595531, 1)
+colors = PackedColorArray(0.71, 0.0236667, 0, 1, 0.68, 0.294667, 0, 1, 1, 0.904, 0.28, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_272bh"]
+gradient = SubResource("Gradient_7mycd")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_yaehf"]
+friction = 0.5
+bounce = 0.25
+
+[sub_resource type="Gradient" id="Gradient_1bvp3"]
+offsets = PackedFloat32Array(0, 0.633811, 0.88596, 0.940401)
+colors = PackedColorArray(1, 1, 1, 1, 0.954738, 0.954738, 0.954738, 1, 0.503725, 0.503725, 0.503725, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lquwl"]
+gradient = SubResource("Gradient_1bvp3")
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_h2yge"]
+random_pitch = 1.4
+streams_count = 1
+stream_0/stream = ExtResource("1_0xm2m")
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_074og"]
+friction = 0.5
+bounce = 0.25
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5t3v0"]
+friction = 0.5
+bounce = 0.25
+
+[sub_resource type="Gradient" id="Gradient_272bh"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.502006, 0.570773)
+colors = PackedColorArray(0, 0, 0, 1, 0.194118, 0.127789, 0.13801, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5vw27"]
+gradient = SubResource("Gradient_272bh")
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="Animation" id="Animation_jsu24"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Polygon2D2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_5t3v0"]
+resource_name = "shake"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Polygon2D2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.633333, 0.833333),
+"transitions": PackedFloat32Array(2, 0.466517, 1.07177),
+"update": 0,
+"values": [Vector2(1.45519e-11, -10), Vector2(1.45519e-11, 20), Vector2(1.45519e-11, -10)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_osv71"]
+_data = {
+&"RESET": SubResource("Animation_jsu24"),
+&"shake": SubResource("Animation_5t3v0")
+}
+
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_7mycd"]
+shuffle = true
+stream_count = 13
+stream_0 = ExtResource("6_074og")
+stream_1 = ExtResource("10_getpj")
+stream_2 = ExtResource("11_ryguw")
+stream_3 = ExtResource("12_d13ii")
+stream_4 = ExtResource("5_yaehf")
+stream_5 = ExtResource("13_1u8w0")
+stream_6 = ExtResource("14_0odxb")
+stream_7 = ExtResource("15_lswn8")
+stream_8 = ExtResource("16_a6jrf")
+stream_9 = ExtResource("17_xuqvo")
+stream_10 = ExtResource("7_cegan")
+stream_11 = ExtResource("1_jsu24")
+stream_12 = ExtResource("9_82xsv")
+
+[sub_resource type="LabelSettings" id="LabelSettings_lquwl"]
+font_size = 40
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 8
+shadow_color = Color(0, 0, 0, 0.501961)
+shadow_offset = Vector2(4, 4)
+
+[sub_resource type="GDScript" id="GDScript_jsu24"]
+resource_name = "fps"
+script/source = "extends Label
+
+
+func _process(delta: float) -> void:
+    pass
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_osv71"]
+bg_color = Color(0.6, 0.279522, 0.249147, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7pp0j"]
+bg_color = Color(0.826471, 0.779553, 0.286934, 1)
+border_color = Color(0.880392, 0.880392, 0.880392, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+corner_detail = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_jsu24"]
+font_size = 40
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 8
+shadow_color = Color(0, 0, 0, 0.501961)
+shadow_offset = Vector2(4, 4)
+
+[sub_resource type="LabelSettings" id="LabelSettings_vfgkf"]
+font_size = 64
+outline_size = 5
+outline_color = Color(0.0409309, 0.0421569, 0.0164266, 1)
+shadow_size = 8
+shadow_color = Color(0, 0, 0, 0.658824)
+shadow_offset = Vector2(4, 4)
+
+[sub_resource type="GDScript" id="GDScript_7pp0j"]
+resource_name = "timer"
+script/source = "extends Label
+
+@export var time = 60
+
+signal time_up()
+
+
+func _on_timer_timeout() -> void:
+    time -= 1
+    text = \"%d\" % time
+    if time<= 0:
+        time_up.emit()
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7mycd"]
+bg_color = Color(0.450499, 0.6, 0.38702, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="LabelSettings" id="LabelSettings_272bh"]
+font_size = 18
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_yaehf"]
+font_size = 96
+font_color = Color(0.622859, 1, 0.607951, 1)
+outline_size = 17
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 2
+shadow_color = Color(0, 0, 0, 0.564706)
+shadow_offset = Vector2(1, 16)
+
+[node name="Areama" type="Node2D" node_paths=PackedStringArray("player_1", "player_2")]
+script = SubResource("GDScript_5t3v0")
+player_1 = NodePath("P1")
+player_2 = NodePath("P2")
+
+[node name="Background" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_lquwl")
+position = Vector2(960, 544)
+scale = Vector2(23.7037, 14.1299)
+texture = SubResource("GradientTexture2D_272bh")
+region_enabled = true
+region_rect = Rect2(-9, -6.5, 81, 77)
+
+[node name="P1" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_bar")]
+position = Vector2(256, 320)
+disable_mode = 2
+physics_material_override = SubResource("PhysicsMaterial_yaehf")
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("2_lquwl")
+torque_a = 1000.0
+torque_b = 200.0
+floaty_text = ExtResource("3_dp3eg")
+spark = ExtResource("1_h2yge")
+fighter_name = &"Dude-er"
+health_bar = NodePath("../CanvasLayer/P1Name/P1Bar")
+color = Color(0.0551414, 0, 1, 1)
+
+[node name="Polygon2D" type="Polygon2D" parent="P1"]
+color = Color(0.0468092, 0, 1, 1)
+texture = SubResource("GradientTexture2D_lquwl")
+polygon = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+uv = PackedVector2Array(-4.76837e-07, -4.76837e-07, 64, -3.8147e-06, 64, 64, 4.76837e-07, 64)
+
+[node name="Polygon2D2" type="CollisionPolygon2D" parent="P1"]
+polygon = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="P1"]
+stream = SubResource("AudioStreamRandomizer_h2yge")
+attenuation = 1.10957
+bus = &"SFX"
+
+[node name="P2" type="RigidBody2D" parent="." node_paths=PackedStringArray("health_bar")]
+position = Vector2(1664, 320)
+disable_mode = 2
+physics_material_override = SubResource("PhysicsMaterial_074og")
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("2_lquwl")
+torque_a = 1000.0
+torque_b = 200.0
+floaty_text = ExtResource("3_dp3eg")
+spark = ExtResource("1_h2yge")
+fighter_name = &"Mans-u"
+health_bar = NodePath("../CanvasLayer/P2Name/P2Bar")
+color = Color(1, 0, 0.00543594, 1)
+
+[node name="Polygon2D" type="Polygon2D" parent="P2"]
+color = Color(1, 0.201939, 0.207556, 1)
+texture = SubResource("GradientTexture2D_lquwl")
+polygon = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+uv = PackedVector2Array(7.62939e-06, 0, 64, 0, 64, 64, 7.62939e-06, 64)
+
+[node name="Polygon2D2" type="CollisionPolygon2D" parent="P2"]
+polygon = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="P2"]
+stream = SubResource("AudioStreamRandomizer_h2yge")
+attenuation = 1.10957
+bus = &"SFX"
+
+[node name="Ring" type="StaticBody2D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_5t3v0")
+
+[node name="Polygon2D2" type="CollisionPolygon2D" parent="Ring"]
+polygon = PackedVector2Array(1920, 1088, 1920, 0, 1920, -320, 1016, -320, 1856, 0, 1856, 1024, 64, 1024, 64, 0, 912, -320, 0, -320, 0, 0, 0, 1088)
+
+[node name="Polygon2D" type="Polygon2D" parent="Ring"]
+texture_repeat = 2
+color = Color(1, 0.968048, 0.954732, 1)
+texture = SubResource("GradientTexture2D_5vw27")
+polygon = PackedVector2Array(1920, 1088, 1920, 0, 1920, -320, 1016, -320, 1856, 0, 1856, 1024, 64, 1024, 64, 0, 912, -320, 0, -320, 0, 0, 0, 1088)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Ring"]
+libraries = {
+&"": SubResource("AnimationLibrary_osv71")
+}
+speed_scale = 2.0
+
+[node name="BGM" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamPlaylist_7mycd")
+autoplay = true
+bus = &"Music"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="P1Name" type="Label" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.0666667
+anchor_top = 0.104
+anchor_right = 0.0666667
+anchor_bottom = 0.137037
+offset_left = -6.10352e-05
+offset_top = 15.68
+offset_right = 103.0
+offset_bottom = 35.0
+text = "Dude"
+label_settings = SubResource("LabelSettings_lquwl")
+script = SubResource("GDScript_jsu24")
+metadata/_edit_use_anchors_ = true
+
+[node name="P1Bar" type="ProgressBar" parent="CanvasLayer/P1Name"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = -23.0
+offset_right = 654.0
+offset_bottom = 1.0
+theme_override_colors/font_color = Color(0.556863, 0.427724, 0.468061, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_osv71")
+theme_override_styles/fill = SubResource("StyleBoxFlat_7pp0j")
+min_value = 1.0
+value = 100.0
+metadata/_edit_use_anchors_ = true
+
+[node name="P2Name" type="Label" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.934115
+anchor_top = 0.111
+anchor_right = 0.934115
+anchor_bottom = 0.138426
+offset_left = -145.501
+offset_top = 8.11999
+offset_right = -3.50134
+offset_bottom = 33.4999
+text = "Mans"
+label_settings = SubResource("LabelSettings_jsu24")
+horizontal_alignment = 2
+script = SubResource("GDScript_jsu24")
+metadata/_edit_use_anchors_ = true
+
+[node name="P2Bar" type="ProgressBar" parent="CanvasLayer/P2Name"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.253968
+anchor_right = 0.253968
+offset_left = -544.0
+offset_top = -24.0
+offset_right = 110.0
+theme_override_colors/font_color = Color(0.556863, 0.427724, 0.468061, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_osv71")
+theme_override_styles/fill = SubResource("StyleBoxFlat_7pp0j")
+min_value = 1.0
+value = 100.0
+fill_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Timer" type="Label" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.475
+anchor_top = 0.037037
+anchor_right = 0.525
+anchor_bottom = 0.118519
+offset_right = 6.10352e-05
+text = "--"
+label_settings = SubResource("LabelSettings_vfgkf")
+horizontal_alignment = 1
+script = SubResource("GDScript_7pp0j")
+time = 30
+metadata/_edit_use_anchors_ = true
+
+[node name="Timer" type="Timer" parent="CanvasLayer/Timer"]
+autostart = true
+
+[node name="P1Wins" type="Label" parent="CanvasLayer"]
+offset_left = 640.0
+offset_top = 136.0
+offset_right = 768.0
+offset_bottom = 170.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_7mycd")
+text = "WIN"
+label_settings = SubResource("LabelSettings_272bh")
+
+[node name="P2Wins" type="Label" parent="CanvasLayer"]
+offset_left = 1152.0
+offset_top = 136.0
+offset_right = 1280.0
+offset_bottom = 170.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_7mycd")
+text = "WIN"
+label_settings = SubResource("LabelSettings_272bh")
+
+[node name="Winner" type="Label" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_top = 0.2
+anchor_right = 1.0
+anchor_bottom = 0.2
+offset_top = 8.0
+offset_bottom = 140.0
+grow_horizontal = 2
+text = "EVERYBODY CASSANOVA!"
+label_settings = SubResource("LabelSettings_yaehf")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="body_entered" from="P1" to="P1" method="_on_body_entered"]
+[connection signal="end_fight" from="P1" to="." method="_on_p_1_end_fight"]
+[connection signal="body_entered" from="P2" to="P2" method="_on_body_entered"]
+[connection signal="end_fight" from="P2" to="." method="_on_p_2_end_fight"]
+[connection signal="ready" from="Ring/AnimationPlayer" to="Ring/AnimationPlayer" method="play" binds= ["shake"]]
+[connection signal="time_up" from="CanvasLayer/Timer" to="." method="end_fight"]
+[connection signal="timeout" from="CanvasLayer/Timer/Timer" to="CanvasLayer/Timer" method="_on_timer_timeout"]
