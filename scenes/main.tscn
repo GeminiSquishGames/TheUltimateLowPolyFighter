@@ -154,8 +154,8 @@ tracks/0/path = NodePath("Polygon2D2:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.633333, 0.833333),
-"transitions": PackedFloat32Array(2, 0.466517, 1.07177),
+"times": PackedFloat32Array(0, 0.533333, 0.833333),
+"transitions": PackedFloat32Array(2, 0.189465, 1.07177),
 "update": 0,
 "values": [Vector2(1.45519e-11, -10), Vector2(1.45519e-11, 20), Vector2(1.45519e-11, -10)]
 }
@@ -350,13 +350,13 @@ bus = &"SFX"
 physics_material_override = SubResource("PhysicsMaterial_5t3v0")
 
 [node name="Polygon2D2" type="CollisionPolygon2D" parent="Ring"]
-polygon = PackedVector2Array(1920, 1088, 1920, 0, 1920, -320, 1016, -320, 1856, 0, 1856, 1024, 64, 1024, 64, 0, 912, -320, 0, -320, 0, 0, 0, 1088)
+polygon = PackedVector2Array(1920, 1088, 1920, 0, 1920, -320, 1016, -320, 1728, -192, 1856, 0, 1856, 1024, 64, 1024, 64, 0, 192, -192, 912, -320, 0, -320, 0, 0, 0, 1088)
 
 [node name="Polygon2D" type="Polygon2D" parent="Ring"]
 texture_repeat = 2
 color = Color(1, 0.968048, 0.954732, 1)
 texture = SubResource("GradientTexture2D_5vw27")
-polygon = PackedVector2Array(1920, 1088, 1920, 0, 1920, -320, 1016, -320, 1856, 0, 1856, 1024, 64, 1024, 64, 0, 912, -320, 0, -320, 0, 0, 0, 1088)
+polygon = PackedVector2Array(1920, 1088, 1920, 0, 1920, -320, 1016, -320, 1728, -192, 1856, 0, 1856, 1024, 64, 1024, 64, 0, 192, -192, 912, -320, 0, -320, 0, 0, 0, 1088)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Ring"]
 libraries = {
